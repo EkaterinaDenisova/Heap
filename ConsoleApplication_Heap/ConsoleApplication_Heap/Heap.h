@@ -3,6 +3,8 @@
 // класс Heap
 
 #include<iostream>
+#include<vector>
+using namespace std;
 
 template <typename T>
 class Heap
@@ -35,7 +37,7 @@ public:
 	Heap(const T* arr, int n, int maxsize) { // преобразовать arr в пирамиду 
 		int j, currentpos;
 		// n <= 0 является недопустимым размером массива
-		if ((n <= 0) || (maxsize <= 0)) {
+		if ((n <= 0) || (maxsize <= 0) || (n > maxsize)) {
 			std::cout << "Неправильная размерность массива";
 		}
 
@@ -73,18 +75,39 @@ public:
 	//int ListFull() const;
 	void Insert(const T& item);
 	void Delete();
-	void ClearList();
+	//void ClearList();
 	void PrintHeap();
 	// Метод для поиска элемента в куче
 	int Search(const T& element);
 	T GetMin();
-
-
+	int GetMaxSize();
+	int GetSize();
+	std::vector<T> GetArray();
 };
 
 template <class T>
 T Heap<T>::GetMin() {
 	return hlist[0];
+}
+
+template <class T>
+int Heap<T>::GetMaxSize() {
+	return maxheapsize;
+}
+
+template <class T>
+int Heap<T>::GetSize() {
+	return heapsize;
+}
+
+template <class T>
+std::vector<T> Heap<T>::GetArray() {
+	std::vector<T> v;
+
+	for (int i = 0; i < heapsize; i++) {
+		v.push_back(hlist[i]);
+	}
+	return v;
 }
 
 // утилита для восстановления пирамиды, начиная с индекса i,
@@ -228,7 +251,7 @@ int Heap<T>::Search(const T& element) {
 	return -1;
 }
 
-// отсортировать массив А по убыванию
+// отсортировать массив А по возрастанию
 template <typename T>
 void HeapSort(T* A, int n)
 {
