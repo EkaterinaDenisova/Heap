@@ -77,10 +77,15 @@ public:
 	void PrintHeap();
 	// Метод для поиска элемента в куче
 	int Search(const T& element);
+	T GetMin();
+
 
 };
 
-
+template <class T>
+T Heap<T>::GetMin() {
+	return hlist[0];
+}
 
 // утилита для восстановления пирамиды, начиная с индекса i,
 // подниматься вверх по дереву, переходя от предка к предку.
@@ -221,4 +226,22 @@ int Heap<T>::Search(const T& element) {
 			return i;
 	}
 	return -1;
+}
+
+// отсортировать массив А по убыванию
+template <typename T>
+void HeapSort(T* A, int n)
+{
+	// конструктор, преобразующий А в пирамиду
+	Heap<T> heap1(A, n, n);
+	T elt;
+	// цикл заполнения элементов А[n-1] ... А[1]
+	//for (int i = n - 1; i >= 0; i--)
+	for (int i = 0; i < n; i++)
+	{
+		// исключить наименьший элемент из пирамиды и запомнить его в A[i]
+		elt = heap1.GetMin();
+		A[i] = elt;
+		heap1.Delete();
+	}
 }

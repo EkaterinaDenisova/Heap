@@ -59,7 +59,20 @@ int main()
     heap1.Delete();
     heap1.PrintHeap();
 
-    
+    // Пирамидальная сортировка
+    int* A = new int[5]{ 50, 20,75, 35, 25 };
+
+    cout << "\nИсходный массив: ";
+    for (int i = 0; i < 5; i++) {
+        cout << A[i] << " ";
+    }
+
+    HeapSort(A, 5);
+
+    cout << "\nОтсортированный массив: ";
+    for (int i = 0; i < 5; i++) {
+        cout << A[i] << " ";
+    }
 
 }
 
