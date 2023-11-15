@@ -1,11 +1,15 @@
 #pragma once
 // author: Денисова Екатерина
-// класс Heap
+
 
 #include<iostream>
 #include<vector>
+#include <stdexcept> // для исключений
+#include <cstring>
+
 using namespace std;
 
+// класс Куча (min_heap, в корне минимальный элемент)
 template <typename T>
 class Heap
 {
@@ -25,20 +29,31 @@ private:
 
 public:
 	// конструкторы и деструктор
-	Heap(int maxsize) { // создать пустую пирамиду
+	// создать пустую пирамиду
+	Heap(int maxsize) {
+		hlist = nullptr;
+
+		// вместо cout выбрасывать исключения
 		if (maxsize <= 0) {
-			std::cout << "Неправильная размерность массива";
+			throw invalid_argument("Неправильная размерность массива");
+			//std::cout << "Неправильная размерность массива";
 		}
-		maxheapsize = maxsize;
-		heapsize = 0;
-		hlist = new T[maxheapsize];
+		else {
+			maxheapsize = maxsize;
+			heapsize = 0;
+			hlist = new T[maxheapsize];
+		}
+
 	}
 
-	Heap(const T* arr, int n, int maxsize) { // преобразовать arr в пирамиду 
+	// конструктор с преобразованием arr в кучу
+	Heap(const T* arr, int n, int maxsize) {
 		int j, currentpos;
+		hlist = nullptr;
 		// n <= 0 является недопустимым размером массива
 		if ((n <= 0) || (maxsize <= 0) || (n > maxsize)) {
-			std::cout << "Неправильная размерность массива";
+			throw invalid_argument("Неправильная размерность массива");
+			//std::cout << "Неправильная размерность массива";
 		}
 
 		// использовать n для установки размера пирамиды и максимального размера пирамиды.
@@ -47,9 +62,11 @@ public:
 		heapsize = n;
 		hlist = new T[maxsize];
 
-		for (int i = 0; i < n; i++) {
+		// вместо цикла memcpy
+		/*for (int i = 0; i < n; i++) {
 			hlist[i] = arr[i];
-		}
+		}*/
+		memcpy(hlist, arr, n * sizeof(T));
 
 		// присвоить переменной currentpos индекс последнего родителя.
 		// вызывать FilterDown в цикле с индексами currentpos..0
@@ -62,44 +79,67 @@ public:
 			currentpos--;
 		}
 
-	} 
+	}
 
-	~Heap() { // деструктор
-		delete[] hlist;
-	} 
+	// деструктор
+	~Heap() {
+		// освободить память, выделенную под массив
+		// если эта память была выделенна
+		if (hlist != nullptr) {
+			delete[] hlist;
+		}
+
+	}
 
 
 	// методы обработки списков
-	//int ListSize() const;
-	//int ListEmpty() const;
-	//int ListFull() const;
+
+	// добавление элемента в кучу
 	void Insert(const T& item);
+
+	// удаление из корня
 	void Delete();
-	//void ClearList();
+
+	// печать дерева
 	void PrintHeap();
+
 	// Метод для поиска элемента в куче
+	// возвращает индекс найденного элемента, либо
+	// -1, если элемент не найден
 	int Search(const T& element);
+
+	// Получение значения из корня
 	T GetMin();
+
+	// Получение максимального значения
 	int GetMaxSize();
+
+	// Получить фактический размер массива
 	int GetSize();
+
+	// Получить массив
 	std::vector<T> GetArray();
 };
 
+// Получение значения из корня
 template <class T>
 T Heap<T>::GetMin() {
 	return hlist[0];
 }
 
+// Получение максимального значения
 template <class T>
 int Heap<T>::GetMaxSize() {
 	return maxheapsize;
 }
 
+// Получить фактический размер массива
 template <class T>
 int Heap<T>::GetSize() {
 	return heapsize;
 }
 
+// Получить массив
 template <class T>
 std::vector<T> Heap<T>::GetArray() {
 	std::vector<T> v;
@@ -151,9 +191,28 @@ void Heap<T>::FilterUp(int i)
 template <typename T>
 void Heap<T>::Insert(const T& item)
 {
-	// проверить, заполнена ли пирамида и выйти, если да
+	// проверить, заполнена ли пирамида и, если да, увеличить maxheapsize
 	if (heapsize == maxheapsize) {
-		std::cout<< "Пирамида заполнена";
+		maxheapsize = maxheapsize * 2;
+		T* temp = new T[maxheapsize];
+
+		// вместо цикла memcpy
+		/*for (int i = 0; i < heapsize; i++) {
+			temp[i] = hlist[i];
+		}*/
+
+		// temp - destination
+		// hlist - source
+		memcpy(temp, hlist, heapsize * sizeof(T));
+
+		delete[] hlist;
+		hlist = temp;
+		//throw invalid_argument("Неправильная размерность массива");
+		//std::cout<< "Пирамида заполнена";
+
+		hlist[heapsize] = item;
+		FilterUp(heapsize);
+		heapsize++;
 	}
 	else {
 		// записать элемент в конец пирамиды и увеличить heapsize.
@@ -168,7 +227,7 @@ void Heap<T>::Insert(const T& item)
 // менять местами родителя и сына так, чтобы поддерево,
 // начинающееся в узле i, было пирамидой
 template <typename T>
-void Heap<T>::FilterDown(int i) 
+void Heap<T>::FilterDown(int i)
 {
 	int currentpos, childpos;
 	T target;
@@ -206,15 +265,13 @@ void Heap<T>::FilterDown(int i)
 	hlist[currentpos] = target;
 }
 
-// возвратить значение корневого элемента и обновить пирамиду.
-// попытка удаления элемента из пустой пирамиды влечет за собой
-// выдачу сообщения об ошибке и прекращение программы
+// удалить значение корневого элемента и обновить пирамиду
 template <typename T>
 void Heap<T>::Delete()
 {
 	T tempitem;
 
-	// проверить, пуста ли пирамида
+	// проверить, не пуста ли пирамида
 	if (heapsize != 0) {
 
 		// копировать корень в tempitem. заменить корень последним элементом

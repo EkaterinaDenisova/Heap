@@ -7,7 +7,7 @@
 
 /*Heap<int> createHeap1() {
 
-    // создаётся куча 
+    // создаётся куча
     Heap<int> h(10);
     h.Insert(10);
     h.Insert(15);
@@ -20,10 +20,10 @@
     //        10
     //      /   \
     //     15    50
-    //    / \    / 
-    //   30 40  100      
+    //    / \    /
+    //   30 40  100
 
-   
+
 
     return h;
 }*/
@@ -34,6 +34,7 @@ TEST(TestHeap, TestConstructor) {
     EXPECT_EQ(15, heap0.GetMaxSize());
     EXPECT_EQ(0, heap0.GetSize());
 
+    // проверть для размерности 0 и 1
 
     Heap<int> heap1(10);
     heap1.Insert(10);
@@ -52,7 +53,10 @@ TEST(TestHeap, TestConstructor) {
     EXPECT_EQ(6, heap2.GetSize());
 
     vector<int> v = heap2.GetArray();
-    vector<int> v1 = {10, 15, 40,50,30,100};
+    vector<int> v1 = { 10, 15, 40,50,30,100 };
+
+    // make_heap создаёт кучу на основе вектора (меняется сам вектор)
+
     make_heap(v1.begin(), v1.end(), std::greater<>{});
     EXPECT_EQ(v1, v);
 }
@@ -61,12 +65,12 @@ TEST(TestHeap, TestInsert) {
 
     Heap<int> heap1(10);
     heap1.Insert(2);
-    
+
     EXPECT_EQ(10, heap1.GetMaxSize());
     EXPECT_EQ(1, heap1.GetSize());
     vector<int>v1 = heap1.GetArray();
-    vector<int> v = {2};
-    EXPECT_EQ(v1,v);
+    vector<int> v = { 2 };
+    EXPECT_EQ(v1, v);
 
     heap1.Insert(1);
     v1 = heap1.GetArray();
@@ -89,7 +93,7 @@ TEST(TestHeap, TestSearch) {
     Heap<int> heap2(arr, 6, 10);
 
     int s = heap2.Search(10);
-    EXPECT_EQ(s,0);
+    EXPECT_EQ(s, 0);
 
     s = heap2.Search(50);
     EXPECT_EQ(s, 3);
@@ -123,6 +127,8 @@ TEST(TestHeap, TestDelete) {
     EXPECT_EQ(4, heap2.GetSize());
 
     v = heap2.GetArray();
+
+    // коммент про is_heap и make_heap
     EXPECT_TRUE(is_heap(v.begin(), v.end(), std::greater<>{}));
     v1 = { 30,50,40,100 };
     make_heap(v1.begin(), v1.end(), std::greater<>{});
@@ -145,7 +151,7 @@ TEST(TestHeap, TestHeapSort) {
     HeapSort(arr, 6);
 
     int* arr1 = new int[6] {10, 15, 30, 40, 50, 100};
-    
+
     for (int i = 0; i < 6; i++) {
         EXPECT_EQ(arr[i], arr1[i]);
     }
@@ -154,7 +160,7 @@ TEST(TestHeap, TestHeapSort) {
     delete[] arr1;
 
     arr = new int[10] {55, 48, -54, 36, -24, 38, 12, 5, 2, -1};
-    arr1 = new int[10]{-54, -24, -1, 2, 5, 12, 36, 38, 48, 55};
+    arr1 = new int[10] {-54, -24, -1, 2, 5, 12, 36, 38, 48, 55};
     HeapSort(arr, 10);
 
     for (int i = 0; i < 6; i++) {
