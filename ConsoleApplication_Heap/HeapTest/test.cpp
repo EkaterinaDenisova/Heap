@@ -2,12 +2,12 @@
 #include <algorithm>
 #include "../ConsoleApplication_Heap/Heap.h"
 
-// author: Денисова Екатерина
-// тестирование класса кучи
+// author: Р”РµРЅРёСЃРѕРІР° Р•РєР°С‚РµСЂРёРЅР°
+// С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ РєР»Р°СЃСЃР° РєСѓС‡Рё
 
 /*Heap<int> createHeap1() {
 
-    // создаётся куча
+    // СЃРѕР·РґР°С‘С‚СЃСЏ РєСѓС‡Р°
     Heap<int> h(10);
     h.Insert(10);
     h.Insert(15);
@@ -28,16 +28,16 @@
     return h;
 }*/
 
-// тестирование конструкторов
+// С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРІ
 TEST(TestHeap, TestConstructor) {
     setlocale(LC_ALL, "rus");
     Heap<int>heap0(15);
     EXPECT_EQ(15, heap0.GetMaxSize());
     EXPECT_EQ(0, heap0.GetSize());
 
-    // коструктор с задание макимального размера кучи
+    // РєРѕСЃС‚СЂСѓРєС‚РѕСЂ СЃ Р·Р°РґР°РЅРёРµ РјР°РєРёРјР°Р»СЊРЅРѕРіРѕ СЂР°Р·РјРµСЂР° РєСѓС‡Рё
     Heap<int> heap1(10);
-    // добавление элементов в кучу
+    // РґРѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ РІ РєСѓС‡Сѓ
     heap1.Insert(10); heap1.Insert(15); heap1.Insert(40);
     heap1.Insert(50); heap1.Insert(30); heap1.Insert(100);
     //        10
@@ -47,21 +47,21 @@ TEST(TestHeap, TestConstructor) {
     //   30 40  100      
 
 
-    // проверка максимального размера кучи и фактически используемого
+    // РїСЂРѕРІРµСЂРєР° РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ СЂР°Р·РјРµСЂР° РєСѓС‡Рё Рё С„Р°РєС‚РёС‡РµСЃРєРё РёСЃРїРѕР»СЊР·СѓРµРјРѕРіРѕ
     EXPECT_EQ(10, heap1.GetMaxSize());
     EXPECT_EQ(6, heap1.GetSize());
 
     vector<int> v = heap1.GetArray();
     vector<int> v1 = { 10, 15, 40,50,30,100 };
-    // make_heap создаёт кучу на основе вектора (меняется сам вектор)
-    // первые два параметра - итераторы, определяющие диапазон, который нужно преобразовать в кучу
-    // третий параметр - функция сравнения для создания min_heap
-    // третий параметр опционален, по умолчанию создаётся max_heap
+    // make_heap СЃРѕР·РґР°С‘С‚ РєСѓС‡Сѓ РЅР° РѕСЃРЅРѕРІРµ РІРµРєС‚РѕСЂР° (РјРµРЅСЏРµС‚СЃСЏ СЃР°Рј РІРµРєС‚РѕСЂ)
+    // РїРµСЂРІС‹Рµ РґРІР° РїР°СЂР°РјРµС‚СЂР° - РёС‚РµСЂР°С‚РѕСЂС‹, РѕРїСЂРµРґРµР»СЏСЋС‰РёРµ РґРёР°РїР°Р·РѕРЅ, РєРѕС‚РѕСЂС‹Р№ РЅСѓР¶РЅРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ РІ РєСѓС‡Сѓ
+    // С‚СЂРµС‚РёР№ РїР°СЂР°РјРµС‚СЂ - С„СѓРЅРєС†РёСЏ СЃСЂР°РІРЅРµРЅРёСЏ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ min_heap
+    // С‚СЂРµС‚РёР№ РїР°СЂР°РјРµС‚СЂ РѕРїС†РёРѕРЅР°Р»РµРЅ, РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ СЃРѕР·РґР°С‘С‚СЃСЏ max_heap
     make_heap(v1.begin(), v1.end(), std::greater<>{});
     EXPECT_EQ(v1, v); v.clear();
 
     int* arr = new int[6] {10, 15, 40, 50, 30, 100};
-    // конструктор, принимающий массив
+    // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ, РїСЂРёРЅРёРјР°СЋС‰РёР№ РјР°СЃСЃРёРІ
     Heap<int> heap2(arr, 6, 10);
     delete[] arr;
     EXPECT_EQ(10, heap2.GetMaxSize());
@@ -75,7 +75,7 @@ TEST(TestHeap, TestConstructor) {
     v.clear(); v1.clear();
 
 
-    // пустая куча
+    // РїСѓСЃС‚Р°СЏ РєСѓС‡Р°
     Heap<int>heap3(3);
     EXPECT_EQ(3, heap3.GetMaxSize());
     EXPECT_EQ(0, heap3.GetSize());
@@ -88,11 +88,11 @@ TEST(TestHeap, TestConstructor) {
     }
     catch (invalid_argument const& ex) {
         string s = ex.what();
-        EXPECT_EQ(s, "Неправильная размерность массива");
+        EXPECT_EQ(s, "РќРµРїСЂР°РІРёР»СЊРЅР°СЏ СЂР°Р·РјРµСЂРЅРѕСЃС‚СЊ РјР°СЃСЃРёРІР°");
     }
     v.clear(); v1.clear();
 
-    // куча с одним элементом
+    // РєСѓС‡Р° СЃ РѕРґРЅРёРј СЌР»РµРјРµРЅС‚РѕРј
     Heap<int>heap5(3);
     heap5.Insert(2);
     EXPECT_EQ(3, heap5.GetMaxSize());
@@ -113,7 +113,7 @@ TEST(TestHeap, TestConstructor) {
 
 }
 
-// тестирование вставки
+// С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ РІСЃС‚Р°РІРєРё
 TEST(TestHeap, TestInsert) {
 
     Heap<int> heap1(10);
@@ -140,7 +140,7 @@ TEST(TestHeap, TestInsert) {
     EXPECT_EQ(v1, v);
 }
 
-// тестирование поиска
+// С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ РїРѕРёСЃРєР°
 TEST(TestHeap, TestSearch) {
 
     int* arr = new int[6] {10, 15, 40, 50, 30, 100};
@@ -162,12 +162,12 @@ TEST(TestHeap, TestSearch) {
     s = heap2.Search(16);
     EXPECT_EQ(s, -1);
 
-    // пустая куча
+    // РїСѓСЃС‚Р°СЏ РєСѓС‡Р°
     Heap<int> heap0(2);
     s = heap0.Search(2);
     EXPECT_EQ(s, -1);
 
-    // куча с одним элементом
+    // РєСѓС‡Р° СЃ РѕРґРЅРёРј СЌР»РµРјРµРЅС‚РѕРј
     Heap<int> heap1(2);
     heap1.Insert(2);
     s = heap1.Search(2);
@@ -178,13 +178,13 @@ TEST(TestHeap, TestSearch) {
 
 }
 
-// тестирование удаления
+// С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ СѓРґР°Р»РµРЅРёСЏ
 TEST(TestHeap, TestDelete) {
 
     int* arr = new int[6] {10, 15, 40, 50, 30, 100};
     Heap<int> heap2(arr, 6, 10);
 
-    heap2.Delete(); // удаляем 10
+    heap2.Delete(); // СѓРґР°Р»СЏРµРј 10
 
     EXPECT_EQ(10, heap2.GetMaxSize());
     EXPECT_EQ(5, heap2.GetSize());
@@ -195,23 +195,23 @@ TEST(TestHeap, TestDelete) {
     make_heap(v1.begin(), v1.end(), std::greater<>{});
     EXPECT_EQ(v1, v);
 
-    heap2.Delete(); // удаляем 15
+    heap2.Delete(); // СѓРґР°Р»СЏРµРј 15
 
     EXPECT_EQ(10, heap2.GetMaxSize());
     EXPECT_EQ(4, heap2.GetSize());
 
     v = heap2.GetArray();
 
-    // is_heap проверяет, является ни массив кучей
-    // первые два параметра - итераторы, определяющие диапазон, который нужно проверить
-    // третий параметр - функция сравнения для min_heap
-    // третий параметр опционален, по умолчанию поверяется, является ли max_heap
+    // is_heap РїСЂРѕРІРµСЂСЏРµС‚, СЏРІР»СЏРµС‚СЃСЏ РЅРё РјР°СЃСЃРёРІ РєСѓС‡РµР№
+    // РїРµСЂРІС‹Рµ РґРІР° РїР°СЂР°РјРµС‚СЂР° - РёС‚РµСЂР°С‚РѕСЂС‹, РѕРїСЂРµРґРµР»СЏСЋС‰РёРµ РґРёР°РїР°Р·РѕРЅ, РєРѕС‚РѕСЂС‹Р№ РЅСѓР¶РЅРѕ РїСЂРѕРІРµСЂРёС‚СЊ
+    // С‚СЂРµС‚РёР№ РїР°СЂР°РјРµС‚СЂ - С„СѓРЅРєС†РёСЏ СЃСЂР°РІРЅРµРЅРёСЏ РґР»СЏ min_heap
+    // С‚СЂРµС‚РёР№ РїР°СЂР°РјРµС‚СЂ РѕРїС†РёРѕРЅР°Р»РµРЅ, РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РїРѕРІРµСЂСЏРµС‚СЃСЏ, СЏРІР»СЏРµС‚СЃСЏ Р»Рё max_heap
     EXPECT_TRUE(is_heap(v.begin(), v.end(), std::greater<>{}));
     v1 = { 30,50,40,100 };
     make_heap(v1.begin(), v1.end(), std::greater<>{});
     EXPECT_EQ(v1, v);
 
-    heap2.Delete(); // удаляем 30
+    heap2.Delete(); // СѓРґР°Р»СЏРµРј 30
     EXPECT_EQ(10, heap2.GetMaxSize());
     EXPECT_EQ(3, heap2.GetSize());
 
@@ -221,7 +221,7 @@ TEST(TestHeap, TestDelete) {
     make_heap(v1.begin(), v1.end(), std::greater<>{});
     EXPECT_EQ(v1, v);
 
-    // куча с одним элементом
+    // РєСѓС‡Р° СЃ РѕРґРЅРёРј СЌР»РµРјРµРЅС‚РѕРј
     Heap<int> heap1(2);
     heap1.Insert(-3);
     heap1.Delete();
@@ -232,7 +232,7 @@ TEST(TestHeap, TestDelete) {
     EXPECT_EQ(v1, v);
 
 
-    // пустая куча
+    // РїСѓСЃС‚Р°СЏ РєСѓС‡Р°
     Heap<int> heap0(2);
     heap0.Delete();
     EXPECT_EQ(2, heap0.GetMaxSize());
@@ -244,7 +244,7 @@ TEST(TestHeap, TestDelete) {
 
 }
 
-// тестирование пирамидальной сортировки
+// С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ РїРёСЂР°РјРёРґР°Р»СЊРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРё
 TEST(TestHeap, TestHeapSort) {
     int* arr = new int[6] {10, 15, 40, 50, 30, 100};
     HeapSort(arr, 6);
@@ -280,7 +280,7 @@ TEST(TestHeap, TestHeapSort) {
     delete[] arr;
     delete[] arr1;
 
-    //из одного элемента
+    //РёР· РѕРґРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
     arr = new int[1] { 5 };
     arr1 = new int[1] { 5 };
     HeapSort(arr, 1);
@@ -289,14 +289,14 @@ TEST(TestHeap, TestHeapSort) {
     delete[] arr;
     delete[] arr1;
 
-    // пустой массив
+    // РїСѓСЃС‚РѕР№ РјР°СЃСЃРёРІ
     try {
         arr = nullptr;
         HeapSort(arr, 0);
     }
     catch (invalid_argument const& ex) {
         string s = ex.what();
-        EXPECT_EQ(s, "Неправильная размерность массива");
+        EXPECT_EQ(s, "РќРµРїСЂР°РІРёР»СЊРЅР°СЏ СЂР°Р·РјРµСЂРЅРѕСЃС‚СЊ РјР°СЃСЃРёРІР°");
     }
 
 
