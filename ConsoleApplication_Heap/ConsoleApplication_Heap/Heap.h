@@ -101,47 +101,47 @@ public:
 	void Delete();
 
 	// печать дерева
-	void PrintHeap();
+	void PrintHeap() const;
 
 	// Метод для поиска элемента в куче
 	// возвращает индекс найденного элемента, либо
 	// -1, если элемент не найден
-	int Search(const T& element);
+	int Search(const T& element) const;
 
 	// Получение значения из корня
-	T GetMin();
+	T GetMin() const;
 
 	// Получение максимального значения
-	int GetMaxSize();
+	int GetMaxSize() const;
 
 	// Получить фактический размер массива
-	int GetSize();
+	int GetSize() const;
 
 	// Получить массив
-	std::vector<T> GetArray();
+	std::vector<T> GetArray() const;
 };
 
 // Получение значения из корня
 template <class T>
-T Heap<T>::GetMin() {
+T Heap<T>::GetMin() const{
 	return hlist[0];
 }
 
 // Получение максимального значения
 template <class T>
-int Heap<T>::GetMaxSize() {
+int Heap<T>::GetMaxSize() const{
 	return maxheapsize;
 }
 
 // Получить фактический размер массива
 template <class T>
-int Heap<T>::GetSize() {
+int Heap<T>::GetSize() const{
 	return heapsize;
 }
 
 // Получить массив
 template <class T>
-std::vector<T> Heap<T>::GetArray() {
+std::vector<T> Heap<T>::GetArray() const {
 	std::vector<T> v;
 
 	for (int i = 0; i < heapsize; i++) {
@@ -288,7 +288,7 @@ void Heap<T>::Delete()
 
 //печать кучи 
 template <typename T>
-void Heap<T>::PrintHeap()
+void Heap<T>::PrintHeap() const
 {
 	for (int i = 0; i < heapsize; i++)
 	{
@@ -300,7 +300,7 @@ void Heap<T>::PrintHeap()
 // Метод для поиска элемента в куче
 // Возвращает индекс элемента или -1, если элемент не найден
 template <typename T>
-int Heap<T>::Search(const T& element) {
+int Heap<T>::Search(const T& element) const{
 	for (int i = 0; i < heapsize; i++) {
 		if (hlist[i] == element)
 			return i;
